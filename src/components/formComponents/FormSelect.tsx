@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useTheme } from "@chakra-ui/react";
 import FromWrapper from "./FormWrapper";
 import { IFormInputProps } from "@src/interface/forms";
@@ -36,6 +36,13 @@ const FormSelect: React.FC<IFormSelectProps> = ({
     onBlur && onBlur(name, true);
   };
 
+
+  // couldn't use document obj directly, that's why
+  const [_doc, _setDoc] = useState<HTMLElement>();
+  useEffect(() => {
+    _setDoc(document.body);
+  }, []);
+
   return (
     <FromWrapper
       isInvalid={Boolean(error && touched)}
@@ -52,6 +59,8 @@ const FormSelect: React.FC<IFormSelectProps> = ({
         onChange={handleChange}
         onBlur={handleBlur}
         options={options}
+        menuPosition={"fixed"}
+        menuPortalTarget={_doc}
         // styles
         styles={{
           container: (base) => ({
