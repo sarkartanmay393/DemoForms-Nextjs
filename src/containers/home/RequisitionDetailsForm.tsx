@@ -1,5 +1,5 @@
 import { Button, Flex, Box } from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import FormInput from "../../components/formComponents/FormInput";
 import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
@@ -40,6 +40,8 @@ const RequisitionDetailsForm: React.FC<{
     }),
     onSubmit: (values) => {
       handleTab(1);
+      console.log("req");
+
     },
   });
 
