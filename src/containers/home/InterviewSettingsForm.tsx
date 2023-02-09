@@ -3,16 +3,24 @@ import React from "react";
 import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
 import { PageNumbers } from "../../interface/home";
-import { IInterViewSettings } from "../../interface/forms";
+import {IInterViewSettings, InitialValueProps} from "../../interface/forms";
 import {
   interviewDurationOptions,
   interviewLanguageOptions,
   interviewModeOptions,
 } from "./constants";
+import {useData} from "@containers/home/DataProvider";
 
 const InterviewDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
+
+
+  const stateContext: {
+    state: InitialValueProps,
+    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+  } = useData();
+
   const {
     errors,
     touched,
@@ -27,6 +35,27 @@ const InterviewDetailsForm: React.FC<{
       interviewLanguage: "",
     },
     onSubmit: (values) => {
+      const saveValuesToState = () => {
+        stateContext.setState({
+          requisitionDetails: {
+            gender: stateContext.state.requisitionDetails.gender,
+            noOfOpenings: stateContext.state.requisitionDetails.noOfOpenings,
+            requisitionTitle: stateContext.state.requisitionDetails.requisitionTitle,
+            urgency: stateContext.state.requisitionDetails.urgency,
+          },
+          jobDetails: {
+            jobDetails: stateContext.state.jobDetails.jobDetails,
+            jobLocation: stateContext.state.jobDetails.jobLocation,
+            jobTitle: stateContext.state.jobDetails.jobTitle,
+          },
+          interviewSettings: {
+            interviewDuration: values.interviewDuration,
+            interviewLanguage: values.interviewLanguage,
+            interviewMode: values.interviewMode,
+          },
+        });
+      };
+      saveValuesToState();
       console.log({ values });
       alert("Form successfully submitted");
     },

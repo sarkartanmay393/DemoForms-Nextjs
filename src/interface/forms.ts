@@ -1,6 +1,25 @@
 import { FormControlProps, InputProps } from "@chakra-ui/react";
 import { FormikErrors, FormikTouched } from "formik";
 
+export interface InitialValueProps {
+  requisitionDetails: {
+    gender: string;
+    noOfOpenings: number;
+    requisitionTitle: string;
+    urgency: string;
+  },
+  jobDetails: {
+    jobDetails: string;
+    jobLocation: string;
+    jobTitle: string;
+  },
+  interviewSettings: {
+    interviewDuration: string;
+    interviewLanguage: string;
+    interviewMode: string;
+  },
+};
+
 export interface IFormInputProps {
   name: string;
   label?: React.ReactNode;

@@ -4,11 +4,18 @@ import FormInput from "../../components/formComponents/FormInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
-import { IJobDetails } from "../../interface/forms";
+import {IJobDetails, InitialValueProps} from "../../interface/forms";
+import {useData} from "@containers/home/DataProvider";
 
 const JobDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
+
+    const stateContext: {
+        state: InitialValueProps,
+        setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+    } = useData();
+
   const {
       handleChange,
       errors,
@@ -28,7 +35,27 @@ const JobDetailsForm: React.FC<{
         jobLocation: Yup.string().required("Job Location is required"),
       }),
       onSubmit: (values) => {
-        console.log("next");
+          const saveValuesToState = () => {
+              stateContext.setState({
+                  requisitionDetails: {
+                      gender: stateContext.state.requisitionDetails.gender,
+                      noOfOpenings: stateContext.state.requisitionDetails.noOfOpenings,
+                      requisitionTitle: stateContext.state.requisitionDetails.requisitionTitle,
+                      urgency: stateContext.state.requisitionDetails.urgency,
+                  },
+                  jobDetails: {
+                      jobDetails: values.jobDetails,
+                      jobLocation: values.jobLocation,
+                      jobTitle: values.jobTitle,
+                  },
+                  interviewSettings: {
+                      interviewDuration: "",
+                      interviewLanguage: "",
+                      interviewMode: "",
+                  },
+              });
+          };
+          saveValuesToState();
         handleTab(2);
       },
     });

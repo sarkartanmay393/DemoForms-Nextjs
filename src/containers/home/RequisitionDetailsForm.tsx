@@ -5,12 +5,19 @@ import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
-import { IRequisitionDetails } from "../../interface/forms";
+import {InitialValueProps, IRequisitionDetails} from "../../interface/forms";
 import { genderOptions, urgencyOptions } from "./constants";
+import {useData} from "@containers/home/DataProvider";
 
 const RequisitionDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
+
+  const stateContext: {
+    state: InitialValueProps,
+    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+  } = useData();
+
   const {
     handleChange,
     errors,
@@ -39,9 +46,28 @@ const RequisitionDetailsForm: React.FC<{
       gender: Yup.string().required("Gender is required"),
     }),
     onSubmit: (values) => {
+      const saveValuesToState = () => {
+        stateContext.setState({
+          requisitionDetails: {
+            gender: values.gender,
+            noOfOpenings: values.noOfOpenings,
+            requisitionTitle: values.requisitionTitle,
+            urgency: values.urgency,
+          },
+          jobDetails: {
+            jobDetails: "",
+            jobLocation: "",
+            jobTitle: "",
+          },
+          interviewSettings: {
+            interviewDuration: "",
+            interviewLanguage: "",
+            interviewMode: "",
+          },
+        });
+      };
+      saveValuesToState();
       handleTab(1);
-      console.log("req");
-
     },
   });
 

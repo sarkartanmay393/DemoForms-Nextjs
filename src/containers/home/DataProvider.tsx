@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
+import {InitialValueProps} from "@src/interface/forms";
+import {any} from "prop-types";
 
-const initialValues = {
+const initialValues: InitialValueProps = {
   requisitionDetails: {
     gender: "",
     noOfOpenings: 0,
@@ -20,9 +22,29 @@ const initialValues = {
 };
 
 const DataContext = createContext<{
-  state: typeof initialValues;
-  setState: React.Dispatch<React.SetStateAction<typeof initialValues>>;
-} | null>(null);
+  state: InitialValueProps;
+  setState: React.Dispatch<React.SetStateAction<InitialValueProps>>;
+}>({
+  state: {
+    requisitionDetails: {
+      gender: "",
+      noOfOpenings: 0,
+      requisitionTitle: "",
+      urgency: "",
+    },
+    jobDetails: {
+      jobDetails: "",
+      jobLocation: "",
+      jobTitle: "",
+    },
+    interviewSettings: {
+      interviewDuration: "",
+      interviewLanguage: "",
+      interviewMode: "",
+    },
+  },
+  setState(value: ((prevState: InitialValueProps) => InitialValueProps) | InitialValueProps): void {},
+});
 
 const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

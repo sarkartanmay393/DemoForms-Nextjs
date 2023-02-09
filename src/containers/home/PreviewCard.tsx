@@ -1,9 +1,9 @@
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
 import React from "react";
 import {
-  IInterViewSettings,
-  IJobDetails,
-  IRequisitionDetails,
+    IInterViewSettings,
+    IJobDetails, InitialValueProps,
+    IRequisitionDetails,
 } from "../../interface/forms";
 import {
   genderOptions,
@@ -12,6 +12,7 @@ import {
   interviewModeOptions,
   urgencyOptions,
 } from "./constants";
+import {useData} from "@containers/home/DataProvider";
 
 const DataCard: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
@@ -50,6 +51,12 @@ const PreviewCard: React.FC<{
   jobDetails?: IJobDetails;
   interviewSettings?: IInterViewSettings;
 }> = ({ requisitionDetails, jobDetails, interviewSettings }) => {
+
+    const stateContext: {
+        state: InitialValueProps,
+        setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+    } = useData();
+
   return (
     <Box p="1rem">
       <Box borderRadius="10px" bgColor="gray.100" height="fit-content">
@@ -80,14 +87,14 @@ const PreviewCard: React.FC<{
               alignItems="center"
             >
               <Text fontSize="0.9rem" fontWeight="500">
-                {requisitionDetails?.requisitionTitle}
+                {stateContext.state.requisitionDetails.requisitionTitle}
               </Text>
               <Flex justifyContent="space-around" alignItems="center">
-                <Text fontSize="0.8rem" mr="0.4rem" fontWeight="200" as="p">
+                <Text fontSize="0.8rem" mr="0.4rem" fontWeight="400" as="p">
                   OPENINGS
                 </Text>
                 <Text fontSize="1rem" fontWeight="bold" as="span">
-                  {requisitionDetails?.noOfOpenings}
+                    {stateContext.state.requisitionDetails.noOfOpenings}
                 </Text>
               </Flex>
             </Flex>
@@ -97,50 +104,30 @@ const PreviewCard: React.FC<{
           <DataCard title="Requisition Details">
             <KeyValue
               title="Urgency"
-              value={
-                urgencyOptions.find(
-                  (item) => item?.value === requisitionDetails?.urgency
-                )?.label
-              }
+              value={stateContext.state.requisitionDetails.urgency}
             />
             <KeyValue
               title="Gender"
-              value={
-                genderOptions.find(
-                  (item) => item?.value === requisitionDetails?.gender
-                )?.label
-              }
+              value={stateContext.state.requisitionDetails.gender}
             />
           </DataCard>
           <DataCard title="Job Detail">
-            <KeyValue title="Job Title" value={jobDetails?.jobTitle} />
-            <KeyValue title="Job Details" value={jobDetails?.jobDetails} />
-            <KeyValue title="Job Location" value={jobDetails?.jobLocation} />
+            <KeyValue title="Job Title" value={stateContext.state.jobDetails.jobTitle} />
+            <KeyValue title="Job Details" value={stateContext.state.jobDetails.jobDetails} />
+            <KeyValue title="Job Location" value={stateContext.state.jobDetails.jobLocation} />
           </DataCard>
           <DataCard title="Interview Settings">
             <KeyValue
               title="Interview Duration"
-              value={
-                interviewDurationOptions.find(
-                  (item) => item?.value === interviewSettings?.interviewDuration
-                )?.label
-              }
+              value={stateContext.state.interviewSettings.interviewDuration}
             />
             <KeyValue
               title="Interview Language"
-              value={
-                interviewLanguageOptions.find(
-                  (item) => item?.value === interviewSettings?.interviewLanguage
-                )?.label
-              }
+              value={stateContext.state.interviewSettings.interviewLanguage}
             />
             <KeyValue
               title="Interview Mode"
-              value={
-                interviewModeOptions.find(
-                  (item) => item?.value === interviewSettings?.interviewMode
-                )?.label
-              }
+              value={stateContext.state.interviewSettings.interviewMode}
             />
           </DataCard>
         </Box>
