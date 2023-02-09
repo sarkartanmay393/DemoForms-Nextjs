@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
 import React from "react";
 import {
+    FormValueRefs,
     IInterViewSettings,
     IJobDetails, InitialValueProps,
     IRequisitionDetails,
@@ -54,7 +55,8 @@ const PreviewCard: React.FC<{
 
     const stateContext: {
         state: InitialValueProps,
-        setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+        setState: React.Dispatch<React.SetStateAction<InitialValueProps>>,
+        formValues?: FormValueRefs,
     } = useData();
 
   return (

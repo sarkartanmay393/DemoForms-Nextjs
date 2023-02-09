@@ -1,5 +1,6 @@
 import { FormControlProps, InputProps } from "@chakra-ui/react";
 import { FormikErrors, FormikTouched } from "formik";
+import React from "react";
 
 export interface InitialValueProps {
   requisitionDetails: {
@@ -19,6 +20,17 @@ export interface InitialValueProps {
     interviewMode: string;
   },
 };
+
+export class InitialValuePropsClass implements InitialValueProps {
+  constructor(InitialValues: InitialValueProps) {
+    this.interviewSettings = InitialValues.interviewSettings;
+    this.jobDetails = InitialValues.jobDetails;
+    this.requisitionDetails = InitialValues.requisitionDetails;
+  }
+  interviewSettings: { interviewDuration: string; interviewLanguage: string; interviewMode: string };
+  jobDetails: { jobDetails: string; jobLocation: string; jobTitle: string };
+  requisitionDetails: { gender: string; noOfOpenings: number; requisitionTitle: string; urgency: string };
+}
 
 export interface IFormInputProps {
   name: string;

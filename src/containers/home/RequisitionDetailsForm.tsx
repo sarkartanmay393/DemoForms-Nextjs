@@ -5,7 +5,7 @@ import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
-import {InitialValueProps, IRequisitionDetails} from "../../interface/forms";
+import {InitialValueProps, InitialValuePropsClass, IRequisitionDetails} from "../../interface/forms";
 import { genderOptions, urgencyOptions } from "./constants";
 import {useData} from "@containers/home/DataProvider";
 
@@ -15,7 +15,7 @@ const RequisitionDetailsForm: React.FC<{
 
   const stateContext: {
     state: InitialValueProps,
-    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
+    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>,
   } = useData();
 
   const {
@@ -47,24 +47,12 @@ const RequisitionDetailsForm: React.FC<{
     }),
     onSubmit: (values) => {
       const saveValuesToState = () => {
-        stateContext.setState({
-          requisitionDetails: {
-            gender: values.gender,
-            noOfOpenings: values.noOfOpenings,
-            requisitionTitle: values.requisitionTitle,
-            urgency: values.urgency,
-          },
-          jobDetails: {
-            jobDetails: "",
-            jobLocation: "",
-            jobTitle: "",
-          },
-          interviewSettings: {
-            interviewDuration: "",
-            interviewLanguage: "",
-            interviewMode: "",
-          },
-        });
+        let tmp = stateContext.state;
+        tmp.requisitionDetails.gender = values.gender;
+        tmp.requisitionDetails.noOfOpenings = values.noOfOpenings;
+        tmp.requisitionDetails.requisitionTitle = values.requisitionTitle;
+        tmp.requisitionDetails.urgency = values.urgency;
+        stateContext.setState(tmp);
       };
       saveValuesToState();
       handleTab(1);
@@ -78,7 +66,12 @@ const RequisitionDetailsForm: React.FC<{
           label="Requisition Title"
           placeholder="Enter requisition title"
           name="requisitionTitle"
-          onChange={handleChange}
+          onChange={(e) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.requisitionDetails.requisitionTitle = e.target.value;
+            stateContext.setState(tmp);
+            handleChange(e);
+          }}
           onBlur={handleBlur}
           value={values?.requisitionTitle}
           error={errors?.requisitionTitle}
@@ -88,7 +81,12 @@ const RequisitionDetailsForm: React.FC<{
           label="Number of openings"
           placeholder="Enter number of openings"
           name="noOfOpenings"
-          onChange={handleChange}
+          onChange={(e) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.requisitionDetails.noOfOpenings = Number(e.target.value);
+            stateContext.setState(tmp);
+            handleChange(e);
+          }}
           onBlur={handleBlur}
           value={values?.noOfOpenings}
           error={errors?.noOfOpenings}
@@ -99,7 +97,11 @@ const RequisitionDetailsForm: React.FC<{
           name="gender"
           placeholder="Select gender"
           options={genderOptions}
-          onChange={setFieldValue}
+          onChange={(e: {label: string, value: string}) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.requisitionDetails.gender = e.label;
+            stateContext.setState(tmp);
+          }}
           onBlur={setFieldTouched}
           error={errors.gender}
           touched={touched.gender}
@@ -110,7 +112,11 @@ const RequisitionDetailsForm: React.FC<{
           name="urgency"
           placeholder="Select urgency"
           options={urgencyOptions}
-          onChange={setFieldValue}
+          onChange={(e: {label: string, value: string}) => {
+              let tmp = new InitialValuePropsClass(stateContext.state);
+              tmp.requisitionDetails.urgency = e.label;
+              stateContext.setState(tmp);
+          }}
           onBlur={setFieldTouched}
           error={errors.urgency}
           touched={touched.urgency}

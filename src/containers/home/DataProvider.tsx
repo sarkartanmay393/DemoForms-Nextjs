@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {createContext, useContext, useRef, useState} from "react";
 import {InitialValueProps} from "@src/interface/forms";
-import {any} from "prop-types";
 
 const initialValues: InitialValueProps = {
   requisitionDetails: {
@@ -21,28 +20,12 @@ const initialValues: InitialValueProps = {
   },
 };
 
+
 const DataContext = createContext<{
   state: InitialValueProps;
   setState: React.Dispatch<React.SetStateAction<InitialValueProps>>;
 }>({
-  state: {
-    requisitionDetails: {
-      gender: "",
-      noOfOpenings: 0,
-      requisitionTitle: "",
-      urgency: "",
-    },
-    jobDetails: {
-      jobDetails: "",
-      jobLocation: "",
-      jobTitle: "",
-    },
-    interviewSettings: {
-      interviewDuration: "",
-      interviewLanguage: "",
-      interviewMode: "",
-    },
-  },
+  state: initialValues,
   setState(value: ((prevState: InitialValueProps) => InitialValueProps) | InitialValueProps): void {},
 });
 

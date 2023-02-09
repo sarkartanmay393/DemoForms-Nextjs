@@ -16,8 +16,6 @@ import JobDetailsForm from "./JobDetailsForm";
 import RequisitionForm from "./RequisitionDetailsForm";
 import PreviewCard from "./PreviewCard";
 import { PageNumbers } from "../../interface/home";
-import {useData} from "@containers/home/DataProvider";
-import {InitialValueProps} from "@src/interface/forms";
 
 const CustomTab: React.FC<TabProps> = ({ children, ...props }) => {
   return (

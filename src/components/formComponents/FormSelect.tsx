@@ -8,7 +8,7 @@ interface IFormSelectProps
   extends Omit<IFormInputProps, "inputProps" | "type" | "onChange" | "onBlur"> {
   options: { label: string; value: string }[] | any;
   selectProps?: Props;
-  onChange?: any;
+  onChange?: ((e: {label: string, value: string}) => void);
   onBlur?: any;
 }
 
@@ -30,7 +30,7 @@ const FormSelect: React.FC<IFormSelectProps> = ({
   const theme = useTheme();
 
   const handleChange = (value: any) => {
-    onChange && onChange(name, value?.value);
+    onChange && onChange(value);
   };
   const handleBlur = () => {
     onBlur && onBlur(name, true);
