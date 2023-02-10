@@ -3,7 +3,7 @@ import React from "react";
 import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
 import { PageNumbers } from "../../interface/home";
-import {IInterViewSettings, InitialValueProps} from "../../interface/forms";
+import {IInterViewSettings, InitialValueProps, InitialValuePropsClass} from "../../interface/forms";
 import {
   interviewDurationOptions,
   interviewLanguageOptions,
@@ -14,7 +14,6 @@ import {useData} from "@containers/home/DataProvider";
 const InterviewDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
-
 
   const stateContext: {
     state: InitialValueProps,
@@ -35,28 +34,11 @@ const InterviewDetailsForm: React.FC<{
       interviewLanguage: "",
     },
     onSubmit: (values) => {
-      const saveValuesToState = () => {
-        stateContext.setState({
-          requisitionDetails: {
-            gender: stateContext.state.requisitionDetails.gender,
-            noOfOpenings: stateContext.state.requisitionDetails.noOfOpenings,
-            requisitionTitle: stateContext.state.requisitionDetails.requisitionTitle,
-            urgency: stateContext.state.requisitionDetails.urgency,
-          },
-          jobDetails: {
-            jobDetails: stateContext.state.jobDetails.jobDetails,
-            jobLocation: stateContext.state.jobDetails.jobLocation,
-            jobTitle: stateContext.state.jobDetails.jobTitle,
-          },
-          interviewSettings: {
-            interviewDuration: values.interviewDuration,
-            interviewLanguage: values.interviewLanguage,
-            interviewMode: values.interviewMode,
-          },
-        });
-      };
-      saveValuesToState();
-      console.log({ values });
+      let tmp = new InitialValuePropsClass(stateContext.state);
+      tmp.interviewSettings.interviewDuration = values.interviewDuration;
+      tmp.interviewSettings.interviewMode = values.interviewMode;
+      tmp.interviewSettings.interviewLanguage = values.interviewLanguage;
+      stateContext.setState(tmp);
       alert("Form successfully submitted");
     },
   });
@@ -69,7 +51,12 @@ const InterviewDetailsForm: React.FC<{
           placeholder="Select interview mode"
           name="interviewMode"
           options={interviewModeOptions}
-          onChange={setFieldValue}
+          onChange={(name: string, value: string) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.interviewSettings.interviewMode = value;
+            stateContext.setState(tmp);
+            setFieldValue(name, value);
+          }}
           onBlur={setFieldTouched}
           value={values?.interviewMode}
           error={errors?.interviewMode}
@@ -80,7 +67,12 @@ const InterviewDetailsForm: React.FC<{
           placeholder="Select interview duration"
           name="interviewDuration"
           options={interviewDurationOptions}
-          onChange={setFieldValue}
+          onChange={(name: string, value: string) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.interviewSettings.interviewDuration = value;
+            stateContext.setState(tmp);
+            setFieldValue(name, value);
+          }}
           onBlur={setFieldTouched}
           value={values?.interviewDuration}
           error={errors?.interviewDuration}
@@ -91,7 +83,12 @@ const InterviewDetailsForm: React.FC<{
           name="interviewLanguage"
           placeholder="Select interview language"
           options={interviewLanguageOptions}
-          onChange={setFieldValue}
+          onChange={(name: string, value: string) => {
+            let tmp = new InitialValuePropsClass(stateContext.state);
+            tmp.interviewSettings.interviewLanguage = value;
+            stateContext.setState(tmp);
+            setFieldValue(name, value);
+          }}
           onBlur={setFieldTouched}
           error={errors.interviewLanguage}
           touched={touched.interviewLanguage}

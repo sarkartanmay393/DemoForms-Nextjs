@@ -27,9 +27,22 @@ export class InitialValuePropsClass implements InitialValueProps {
     this.jobDetails = InitialValues.jobDetails;
     this.requisitionDetails = InitialValues.requisitionDetails;
   }
-  interviewSettings: { interviewDuration: string; interviewLanguage: string; interviewMode: string };
-  jobDetails: { jobDetails: string; jobLocation: string; jobTitle: string };
-  requisitionDetails: { gender: string; noOfOpenings: number; requisitionTitle: string; urgency: string };
+  interviewSettings: {
+    interviewDuration: string;
+    interviewLanguage: string;
+    interviewMode: string
+  };
+  jobDetails: {
+    jobDetails: string;
+    jobLocation: string;
+    jobTitle: string
+  };
+  requisitionDetails: {
+    gender: string;
+    noOfOpenings: number;
+    requisitionTitle: string;
+    urgency: string
+  };
 }
 
 export interface IFormInputProps {

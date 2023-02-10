@@ -6,9 +6,9 @@ import {
   TabPanels,
   TabPanel,
   Heading,
-  TabProps,
   Box,
   Grid,
+  TabProps,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import InterviewSettingsForm from "./InterviewSettingsForm";
@@ -32,8 +32,6 @@ const HomeLayout = () => {
     setPage(pageNumber);
   };
 
-
-  // @ts-ignore
   return (
     <Box w="100%">
       <Container maxW="1200px">

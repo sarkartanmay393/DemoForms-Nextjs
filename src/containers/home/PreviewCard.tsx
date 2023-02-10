@@ -1,18 +1,10 @@
 import { Box, Flex, Text, Grid } from "@chakra-ui/react";
 import React from "react";
 import {
-    FormValueRefs,
     IInterViewSettings,
     IJobDetails, InitialValueProps,
     IRequisitionDetails,
 } from "../../interface/forms";
-import {
-  genderOptions,
-  interviewDurationOptions,
-  interviewLanguageOptions,
-  interviewModeOptions,
-  urgencyOptions,
-} from "./constants";
 import {useData} from "@containers/home/DataProvider";
 
 const DataCard: React.FC<{ title: string; children: React.ReactNode }> = ({
@@ -56,7 +48,6 @@ const PreviewCard: React.FC<{
     const stateContext: {
         state: InitialValueProps,
         setState: React.Dispatch<React.SetStateAction<InitialValueProps>>,
-        formValues?: FormValueRefs,
     } = useData();
 
   return (

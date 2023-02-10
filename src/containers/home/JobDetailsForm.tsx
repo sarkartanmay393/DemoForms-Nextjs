@@ -4,7 +4,7 @@ import FormInput from "../../components/formComponents/FormInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
-import {IJobDetails, InitialValueProps} from "../../interface/forms";
+import {IJobDetails, InitialValueProps, InitialValuePropsClass} from "../../interface/forms";
 import {useData} from "@containers/home/DataProvider";
 
 const JobDetailsForm: React.FC<{
@@ -35,28 +35,12 @@ const JobDetailsForm: React.FC<{
         jobLocation: Yup.string().required("Job Location is required"),
       }),
       onSubmit: (values) => {
-          const saveValuesToState = () => {
-              stateContext.setState({
-                  requisitionDetails: {
-                      gender: stateContext.state.requisitionDetails.gender,
-                      noOfOpenings: stateContext.state.requisitionDetails.noOfOpenings,
-                      requisitionTitle: stateContext.state.requisitionDetails.requisitionTitle,
-                      urgency: stateContext.state.requisitionDetails.urgency,
-                  },
-                  jobDetails: {
-                      jobDetails: values.jobDetails,
-                      jobLocation: values.jobLocation,
-                      jobTitle: values.jobTitle,
-                  },
-                  interviewSettings: {
-                      interviewDuration: "",
-                      interviewLanguage: "",
-                      interviewMode: "",
-                  },
-              });
-          };
-          saveValuesToState();
-        handleTab(2);
+          let tmp = new InitialValuePropsClass(stateContext.state);
+          tmp.jobDetails.jobDetails = values.jobDetails;
+          tmp.jobDetails.jobTitle = values.jobTitle;
+          tmp.jobDetails.jobLocation = values.jobLocation;
+          stateContext.setState(tmp);
+          handleTab(2);
       },
     });
 
@@ -67,7 +51,12 @@ const JobDetailsForm: React.FC<{
           label="Job Title"
           placeholder="Enter job title"
           name="jobTitle"
-          onChange={handleChange}
+          onChange={(e) => {
+              let tmp = new InitialValuePropsClass(stateContext.state);
+              tmp.jobDetails.jobTitle = e.target.value;
+              stateContext.setState(tmp);
+              handleChange(e);
+          }}
           onBlur={handleBlur}
           value={values?.jobTitle}
           error={errors?.jobTitle}
@@ -77,7 +66,12 @@ const JobDetailsForm: React.FC<{
           label="Job Details"
           placeholder="Enter job details"
           name="jobDetails"
-          onChange={handleChange}
+          onChange={(e) => {
+              let tmp = new InitialValuePropsClass(stateContext.state);
+              tmp.jobDetails.jobDetails = e.target.value;
+              stateContext.setState(tmp);
+              handleChange(e);
+          }}
           onBlur={handleBlur}
           value={values?.jobDetails}
           error={errors?.jobDetails}
@@ -87,7 +81,12 @@ const JobDetailsForm: React.FC<{
           label="Job Location"
           name="jobLocation"
           placeholder="Enter job location"
-          onChange={handleChange}
+          onChange={(e) => {
+              let tmp = new InitialValuePropsClass(stateContext.state);
+              tmp.jobDetails.jobLocation = e.target.value;
+              stateContext.setState(tmp);
+              handleChange(e);
+          }}
           onBlur={handleBlur}
           error={errors?.jobLocation}
           touched={touched?.jobLocation}
@@ -96,7 +95,6 @@ const JobDetailsForm: React.FC<{
         <Flex w="100%" justify="flex-end" mt="4rem" gap="20px">
           <Button colorScheme="gray" type="button" onClick={() => {
               handleTab(0);
-              console.log("pre");
           }}>
             Previous
           </Button>

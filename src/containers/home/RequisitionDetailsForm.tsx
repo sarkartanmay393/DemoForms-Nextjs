@@ -5,7 +5,7 @@ import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
-import {InitialValueProps, InitialValuePropsClass, IRequisitionDetails} from "../../interface/forms";
+import {InitialValuePropsClass, IRequisitionDetails,} from "../../interface/forms";
 import { genderOptions, urgencyOptions } from "./constants";
 import {useData} from "@containers/home/DataProvider";
 
@@ -13,10 +13,7 @@ const RequisitionDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
 
-  const stateContext: {
-    state: InitialValueProps,
-    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>,
-  } = useData();
+  const stateContext = useData();
 
   const {
     handleChange,
@@ -36,26 +33,23 @@ const RequisitionDetailsForm: React.FC<{
       gender: "",
     },
     validationSchema: Yup.object().shape({
-      requisitionTitle: Yup.string().required("Requisition title is required"),
-      noOfOpenings: Yup.number()
-        .typeError("Enter a valid number")
-        .required("Number of openings is required")
-        .positive("Enter a valid number")
-        .min(1, "Enter a valid number"),
-      urgency: Yup.string().required("Urgency is required"),
-      gender: Yup.string().required("Gender is required"),
+      // requisitionTitle: Yup.string().required("Requisition title is required"),
+      // noOfOpenings: Yup.number()
+      //   .typeError("Enter a valid number")
+      //   .required("Number of openings is required")
+      //   .positive("Enter a valid number")
+      //   .min(1, "Enter a valid number"),
+      // urgency: Yup.string().required("Urgency is required"),
+      // gender: Yup.string().required("Gender is required"),
     }),
     onSubmit: (values) => {
-      const saveValuesToState = () => {
-        let tmp = stateContext.state;
+        let tmp = new InitialValuePropsClass(stateContext.state);
         tmp.requisitionDetails.gender = values.gender;
         tmp.requisitionDetails.noOfOpenings = values.noOfOpenings;
         tmp.requisitionDetails.requisitionTitle = values.requisitionTitle;
         tmp.requisitionDetails.urgency = values.urgency;
         stateContext.setState(tmp);
-      };
-      saveValuesToState();
-      handleTab(1);
+        handleTab(1);
     },
   });
 
@@ -97,9 +91,11 @@ const RequisitionDetailsForm: React.FC<{
           name="gender"
           placeholder="Select gender"
           options={genderOptions}
-          onChange={(e: {label: string, value: string}) => {
-            let tmp = new InitialValuePropsClass(stateContext.state);
-            tmp.requisitionDetails.gender = e.label;
+          onChange={(name: string, value: string) => {
+            setFieldValue(name, value);
+            let stateTemp = stateContext.state;
+            let tmp = new InitialValuePropsClass(stateTemp);
+            tmp.requisitionDetails.gender = value;
             stateContext.setState(tmp);
           }}
           onBlur={setFieldTouched}
@@ -112,9 +108,11 @@ const RequisitionDetailsForm: React.FC<{
           name="urgency"
           placeholder="Select urgency"
           options={urgencyOptions}
-          onChange={(e: {label: string, value: string}) => {
-              let tmp = new InitialValuePropsClass(stateContext.state);
-              tmp.requisitionDetails.urgency = e.label;
+          onChange={(name: string, value: string) => {
+              setFieldValue(name, value);
+              let stateTemp = stateContext.state;
+              let tmp = new InitialValuePropsClass(stateTemp);
+              tmp.requisitionDetails.urgency = value;
               stateContext.setState(tmp);
           }}
           onBlur={setFieldTouched}
