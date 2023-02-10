@@ -2,6 +2,7 @@ import { Button, Flex, Box } from "@chakra-ui/react";
 import React from "react";
 import FormSelect from "../../components/formComponents/FormSelect";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { PageNumbers } from "../../interface/home";
 import {IInterViewSettings, InitialValueProps, InitialValuePropsClass} from "../../interface/forms";
 import {
@@ -15,10 +16,7 @@ const InterviewDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
 
-  const stateContext: {
-    state: InitialValueProps,
-    setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
-  } = useData();
+  const stateContext = useData();
 
   const {
     errors,
@@ -33,6 +31,11 @@ const InterviewDetailsForm: React.FC<{
       interviewDuration: "",
       interviewLanguage: "",
     },
+      validationSchema: Yup.object().shape({
+          interviewMode: Yup.string().required("Interview mode is required"),
+          interviewDuration: Yup.string().required("Interview duration is required"),
+          interviewLanguage: Yup.string().required("Interview language is required"),
+      }),
     onSubmit: (values) => {
       let tmp = new InitialValuePropsClass(stateContext.state);
       tmp.interviewSettings.interviewDuration = values.interviewDuration;
@@ -52,10 +55,10 @@ const InterviewDetailsForm: React.FC<{
           name="interviewMode"
           options={interviewModeOptions}
           onChange={(name: string, value: string) => {
+            setFieldValue(name, value);
             let tmp = new InitialValuePropsClass(stateContext.state);
             tmp.interviewSettings.interviewMode = value;
             stateContext.setState(tmp);
-            setFieldValue(name, value);
           }}
           onBlur={setFieldTouched}
           value={values?.interviewMode}
@@ -68,10 +71,10 @@ const InterviewDetailsForm: React.FC<{
           name="interviewDuration"
           options={interviewDurationOptions}
           onChange={(name: string, value: string) => {
+            setFieldValue(name, value);
             let tmp = new InitialValuePropsClass(stateContext.state);
             tmp.interviewSettings.interviewDuration = value;
             stateContext.setState(tmp);
-            setFieldValue(name, value);
           }}
           onBlur={setFieldTouched}
           value={values?.interviewDuration}
@@ -84,10 +87,10 @@ const InterviewDetailsForm: React.FC<{
           placeholder="Select interview language"
           options={interviewLanguageOptions}
           onChange={(name: string, value: string) => {
+            setFieldValue(name, value);
             let tmp = new InitialValuePropsClass(stateContext.state);
             tmp.interviewSettings.interviewLanguage = value;
             stateContext.setState(tmp);
-            setFieldValue(name, value);
           }}
           onBlur={setFieldTouched}
           error={errors.interviewLanguage}

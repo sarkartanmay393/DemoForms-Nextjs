@@ -11,10 +11,7 @@ const JobDetailsForm: React.FC<{
   handleTab: (n: PageNumbers) => void;
 }> = ({ handleTab }) => {
 
-    const stateContext: {
-        state: InitialValueProps,
-        setState: React.Dispatch<React.SetStateAction<InitialValueProps>>
-    } = useData();
+    const stateContext = useData();
 
   const {
       handleChange,

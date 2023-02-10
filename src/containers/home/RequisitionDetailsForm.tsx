@@ -33,14 +33,14 @@ const RequisitionDetailsForm: React.FC<{
       gender: "",
     },
     validationSchema: Yup.object().shape({
-      // requisitionTitle: Yup.string().required("Requisition title is required"),
-      // noOfOpenings: Yup.number()
-      //   .typeError("Enter a valid number")
-      //   .required("Number of openings is required")
-      //   .positive("Enter a valid number")
-      //   .min(1, "Enter a valid number"),
-      // urgency: Yup.string().required("Urgency is required"),
-      // gender: Yup.string().required("Gender is required"),
+      requisitionTitle: Yup.string().required("Requisition title is required"),
+      noOfOpenings: Yup.number()
+        .typeError("Enter a valid number")
+        .required("Number of openings is required")
+        .positive("Enter a valid number")
+        .min(1, "Enter a valid number"),
+      urgency: Yup.string().required("Urgency is required"),
+      gender: Yup.string().required("Gender is required"),
     }),
     onSubmit: (values) => {
         let tmp = new InitialValuePropsClass(stateContext.state);
@@ -93,13 +93,12 @@ const RequisitionDetailsForm: React.FC<{
           options={genderOptions}
           onChange={(name: string, value: string) => {
             setFieldValue(name, value);
-            let stateTemp = stateContext.state;
-            let tmp = new InitialValuePropsClass(stateTemp);
+            let tmp = new InitialValuePropsClass(stateContext.state);
             tmp.requisitionDetails.gender = value;
             stateContext.setState(tmp);
           }}
           onBlur={setFieldTouched}
-          error={errors.gender}
+          error={errors && errors.gender}
           touched={touched.gender}
           value={values.gender}
         />
@@ -110,13 +109,12 @@ const RequisitionDetailsForm: React.FC<{
           options={urgencyOptions}
           onChange={(name: string, value: string) => {
               setFieldValue(name, value);
-              let stateTemp = stateContext.state;
-              let tmp = new InitialValuePropsClass(stateTemp);
+              let tmp = new InitialValuePropsClass(stateContext.state);
               tmp.requisitionDetails.urgency = value;
               stateContext.setState(tmp);
           }}
           onBlur={setFieldTouched}
-          error={errors.urgency}
+          error={errors && errors.urgency}
           touched={touched.urgency}
           value={values.urgency}
         />
